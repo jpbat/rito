@@ -8,8 +8,18 @@ import api
 import utils
 
 def main():
-	urfs = api.getUrfGames("euw", "2015-4-3 11:00:00")
-	print api.getGameById("euw", urfs[0])
-
+	id = 2043838452
+	summonerId = 53331486
+	print "getGoldEarned", api.getGoldEarned("euw", id)
+	print "getLargestCriticalStrike", api.getLargestCriticalStrike("euw", id)
+	print "getTotalDamageDealtToChampions", api.getTotalDamageDealtToChampions("euw", id)
+	print "getWardsPlaced", api.getWardsPlaced("euw", id)
+	print "getTotalHeal", api.getTotalHeal("euw", id)
+	print "getIpEarned", api.getIpEarned("euw", summonerId)
+	print "getTotalIpEarned", api.getTotalIpEarned("euw", summonerId)
+	print "getAvgLvlUrf", api.getAvgLvlUrf("euw", summonerId)
+	print "getTrueDamageDealt", api.getTrueDamageDealt("euw", id)
+	print "getTrueDamageTaken", api.getTrueDamageTaken("euw", id)
+	print "getUrfKills", api.getUrfKills("euw", summonerId)
 if __name__ == '__main__':
 	main()
