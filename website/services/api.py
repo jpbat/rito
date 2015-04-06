@@ -39,26 +39,32 @@ def getGameById(region, gameId):
 	return json.loads(response)
 
 # Returns a Python list containing the number of seconds that each player was dead
-def getDeadTime(region, gameId):
+def getDeadTime(region, gameId, team, championId):
 	data = getGameById(region, gameId)
+
+	# find the participantId:
+	participantId = None
+	participants = data["participants"]
+	for participant in participants:
+		if participant["teamId"] == team and participant["championId"] == championId:
+			participantId = participant["participantId"]
+			break
+
+	# Process the timeline so that all the kills and level ups can be caught to calc the death timmers
 	eventList = data["timeline"]["frames"]
-	participantLevels = [1 for i in range(10)]
-	deadList = [[] for i in range(10)]
+	level = 1
+	deadList = []
 
 	for frame in eventList:
 		if "events" in frame:
 			for event in frame["events"]:
-				if event["eventType"] == "SKILL_LEVEL_UP":
-					participantLevels[event["participantId"] - 1] += 1
+				if event["eventType"] == "SKILL_LEVEL_UP" and event["participantId"] == participantId:
+					level += 1
 
-				if event["eventType"] == "CHAMPION_KILL":
-					deadList[event["victimId"] - 1].append((participantLevels[event["victimId"] - 1], event["timestamp"]))
-		
-	totalDeadTimes = [0 for i in range(10)]
-	for i in xrange(10):
-		totalDeadTimes[i] = utils.timeDead(deadList[i])
+				if event["eventType"] == "CHAMPION_KILL" and event["victimId"] == participantId:
+					deadList.append((level, event["timestamp"]))
 
-	return totalDeadTimes
+	return utils.timeDead(deadList)
 
 # Returns the id that represents that summoner
 def getIdBySummonerName(region, summonerName):
@@ -129,19 +135,28 @@ def getRecentMatches(region, summonerId):
 	
 	return json.loads(response)["games"]
 
-# Returns a Python list containing the number of seconds that each player was dead
-def getItemsBought(region, gameId):
+# Returns a Python list containing the items each player bought
+def getItemsBought(region, gameId, teamId, championId):
 	data = getGameById(region, gameId)
+
+	# find the participantId:
+	participantId = None
+	participants = data["participants"]
+	for participant in participants:
+		if participant["teamId"] == team and participant["championId"] == champion:
+			participantId = participant["participantId"]
+			break
+
 	eventList = data["timeline"]["frames"]
-	playerItems = [[] for i in range(10)]
+	items = []
 
 	for frame in eventList:
 		if "events" in frame:
 			for event in frame["events"]:
-				if event["eventType"] == "ITEM_PURCHASED":
-					playerItems[event["participantId"] - 1].append(event["itemId"])
+				if event["eventType"] == "ITEM_PURCHASED" and event["participantId"] == participantId:
+					items.append(event["itemId"])
 
-	return playerItems
+	return items
 
 # Returns a list containing the URF games of a given username and region
 def getUrfGames(region, summonerId):
@@ -156,72 +171,107 @@ def getUrfGames(region, summonerId):
 	return retval
 
 # Returns a list containing the number of HP pots bought by each player
-def calcHpPots(region, gameId):
+def calcHpPots(region, gameId, teamId, championId):
 	
-	items = getItemsBought(region, gameId)
+	items = getItemsBought(region, gameId, teamId, championId)
 
 	# hp pot - 2003
-	return [items[i].count(2003) for i in xrange(len(items))]
+	return items.count(2003)
 
 # Returns a list containing the ammount of gold earned by the players
-def getGoldEarned(region, gameId):
+def getGoldEarned(region, gameId, teamId, championId):
 
 	game = getGameById(region, gameId)
 
-	retval = []
+	# find the participantId:
+	participantId = None
+	participants = game["participants"]
+	for participant in participants:
+		if participant["teamId"] == team and participant["championId"] == champion:
+			participantId = participant["participantId"]
+			break
 
 	for participant in game["participants"]:
-		retval.append(participant["stats"]["goldEarned"])
+		if participant["participantId"] == participantId:
+			return participant["stats"]["goldEarned"]
 
-	return retval
+	return None
 
 # Returns a list containing the largest critical strike of the players
-def getLargestCriticalStrike(region, gameId):
+def getLargestCriticalStrike(region, gameId, teamId, championId):
 
 	game = getGameById(region, gameId)
 
-	retval = []
+	# find the participantId:
+	participantId = None
+	participants = game["participants"]
+	for participant in participants:
+		if participant["teamId"] == team and participant["championId"] == champion:
+			participantId = participant["participantId"]
+			break
 
 	for participant in game["participants"]:
-		retval.append(participant["stats"]["largestCriticalStrike"])
+		if participant["participantId"] == participantId:
+			return participant["stats"]["largestCriticalStrike"]
 
-	return retval
+	return None
 
 # Returns a list containing the total damage dealt to champions by each player
-def getTotalDamageDealtToChampions(region, gameId):
+def getTotalDamageDealtToChampions(region, gameId, teamId, championId):
 
 	game = getGameById(region, gameId)
 
-	retval = []
+	# find the participantId:
+	participantId = None
+	participants = game["participants"]
+	for participant in participants:
+		if participant["teamId"] == team and participant["championId"] == champion:
+			participantId = participant["participantId"]
+			break
 
 	for participant in game["participants"]:
-		retval.append(participant["stats"]["totalDamageDealtToChampions"])
+		if participant["participantId"] == participantId:
+			return participant["stats"]["totalDamageDealtToChampions"]
 
-	return retval
+	return None
 
 # Returns a list containing the number of wards placed by each player
-def getWardsPlaced(region, gameId):
+def getWardsPlaced(region, gameId, teamId, championId):
 
 	game = getGameById(region, gameId)
 
-	retval = []
+	# find the participantId:
+	participantId = None
+	participants = game["participants"]
+	for participant in participants:
+		if participant["teamId"] == team and participant["championId"] == champion:
+			participantId = participant["participantId"]
+			break
 
 	for participant in game["participants"]:
-		retval.append(participant["stats"]["wardsPlaced"])
+		if participant["participantId"] == participantId:
+			return participant["stats"]["wardsPlaced"]
 
-	return retval
+	return None
 
 # Returns a list containing the total heal done by each player
-def getTotalHeal(region, gameId):
+def getTotalHeal(region, gameId, teamId, championId):
 
 	game = getGameById(region, gameId)
 
-	retval = []
+	# find the participantId:
+	participantId = None
+	participants = game["participants"]
+	for participant in participants:
+		if participant["teamId"] == team and participant["championId"] == champion:
+			participantId = participant["participantId"]
+			break
 
 	for participant in game["participants"]:
-		retval.append(participant["stats"]["totalHeal"])
+		if participant["participantId"] == participantId:
+			return participant["stats"]["totalHeal"]
 
-	return retval
+	return None
 
 # Returns the ammont of IP earned in the last URF match
 def getIpEarned(region, summonerId):
@@ -244,28 +294,42 @@ def getAvgLvlUrf(region, summonerId):
 	return total * 1.0 / len(games)
 
 # Returns a list containing the total true damage dealt by each player
-def getTrueDamageDealt(region, gameId):
+def getTrueDamageDealt(region, gameId, teamId, championId):
 
 	game = getGameById(region, gameId)
 
-	retval = []
+	# find the participantId:
+	participantId = None
+	participants = game["participants"]
+	for participant in participants:
+		if participant["teamId"] == team and participant["championId"] == champion:
+			participantId = participant["participantId"]
+			break
 
 	for participant in game["participants"]:
-		retval.append(participant["stats"]["trueDamageDealt"])
+		if participant["participantId"] == participantId:
+			return participant["stats"]["trueDamageDealt"]
 
-	return retval
+	return None
 
 # Returns a list containing the total true damage taken by each player
-def getTrueDamageTaken(region, gameId):
+def getTrueDamageTaken(region, gameId, teamId, championId):
 
 	game = getGameById(region, gameId)
 
-	retval = []
+	# find the participantId:
+	participantId = None
+	participants = game["participants"]
+	for participant in participants:
+		if participant["teamId"] == team and participant["championId"] == champion:
+			participantId = participant["participantId"]
+			break
 
 	for participant in game["participants"]:
-		retval.append(participant["stats"]["magicDamageTaken"])
+		if participant["participantId"] == participantId:
+			return participant["stats"]["magicDamageTaken"]
 
-	return retval
+	return None
 
 # Returns the total number of kills on urf matches on the 2015 season
 def getUrfKills(region, summonerId):

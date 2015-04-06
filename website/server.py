@@ -37,7 +37,9 @@ def getGames(region, summonerName):
 	summonerId = api.getIdBySummonerName(region, summonerName)
 	return api.getUrfGames(region, summonerId)
 
-def getRandomStat(region, matchId):
+def getRandomStat(region, gameId):
+	# m['gameId'], m['championId'], m['teamId']
+	print api.getItemsBought(region, gameId)
 	return None
 
 def notfound():
