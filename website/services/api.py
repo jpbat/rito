@@ -39,14 +39,14 @@ def getGameById(region, gameId):
 	return json.loads(response)
 
 # Returns a Python list containing the number of seconds that each player was dead
-def getDeadTime(region, gameId, team, championId):
+def getDeadTime(region, gameId, teamId, championId):
 	data = getGameById(region, gameId)
 
 	# find the participantId:
 	participantId = None
 	participants = data["participants"]
 	for participant in participants:
-		if participant["teamId"] == team and participant["championId"] == championId:
+		if participant["teamId"] == teamId and participant["championId"] == championId:
 			participantId = participant["participantId"]
 			break
 
@@ -143,7 +143,7 @@ def getItemsBought(region, gameId, teamId, championId):
 	participantId = None
 	participants = data["participants"]
 	for participant in participants:
-		if participant["teamId"] == team and participant["championId"] == champion:
+		if participant["teamId"] == teamId and participant["championId"] == championId:
 			participantId = participant["participantId"]
 			break
 
@@ -187,7 +187,7 @@ def getGoldEarned(region, gameId, teamId, championId):
 	participantId = None
 	participants = game["participants"]
 	for participant in participants:
-		if participant["teamId"] == team and participant["championId"] == champion:
+		if participant["teamId"] == teamId and participant["championId"] == championId:
 			participantId = participant["participantId"]
 			break
 
@@ -206,7 +206,7 @@ def getLargestCriticalStrike(region, gameId, teamId, championId):
 	participantId = None
 	participants = game["participants"]
 	for participant in participants:
-		if participant["teamId"] == team and participant["championId"] == champion:
+		if participant["teamId"] == teamId and participant["championId"] == championId:
 			participantId = participant["participantId"]
 			break
 
@@ -225,7 +225,7 @@ def getTotalDamageDealtToChampions(region, gameId, teamId, championId):
 	participantId = None
 	participants = game["participants"]
 	for participant in participants:
-		if participant["teamId"] == team and participant["championId"] == champion:
+		if participant["teamId"] == teamId and participant["championId"] == championId:
 			participantId = participant["participantId"]
 			break
 
@@ -244,7 +244,7 @@ def getWardsPlaced(region, gameId, teamId, championId):
 	participantId = None
 	participants = game["participants"]
 	for participant in participants:
-		if participant["teamId"] == team and participant["championId"] == champion:
+		if participant["teamId"] == teamId and participant["championId"] == championId:
 			participantId = participant["participantId"]
 			break
 
@@ -263,7 +263,7 @@ def getTotalHeal(region, gameId, teamId, championId):
 	participantId = None
 	participants = game["participants"]
 	for participant in participants:
-		if participant["teamId"] == team and participant["championId"] == champion:
+		if participant["teamId"] == teamId and participant["championId"] == championId:
 			participantId = participant["participantId"]
 			break
 
@@ -302,7 +302,7 @@ def getTrueDamageDealt(region, gameId, teamId, championId):
 	participantId = None
 	participants = game["participants"]
 	for participant in participants:
-		if participant["teamId"] == team and participant["championId"] == champion:
+		if participant["teamId"] == teamId and participant["championId"] == championId:
 			participantId = participant["participantId"]
 			break
 
@@ -316,12 +316,12 @@ def getTrueDamageDealt(region, gameId, teamId, championId):
 def getTrueDamageTaken(region, gameId, teamId, championId):
 
 	game = getGameById(region, gameId)
-
+	
 	# find the participantId:
 	participantId = None
 	participants = game["participants"]
 	for participant in participants:
-		if participant["teamId"] == team and participant["championId"] == champion:
+		if participant["teamId"] == teamId and participant["championId"] == championId:
 			participantId = participant["participantId"]
 			break
 
