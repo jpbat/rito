@@ -1,0 +1,13 @@
+$def with (games)
+<html>
+<head>
+</head>
+<body>	
+	<table style="width:100%">
+	$for game in games:
+		<tr class="$loop.index0">
+			<td>$game["gameId"]</td><td>$game["championId"]</td><td>$game["teamId"]</td>
+		</tr>
+	</table>
+</body>
+</html>

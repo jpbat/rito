@@ -1,0 +1,15 @@
+def getDeadTime(region, gameId, teamId, championId):
+def getMinionsSlained(region, summonerId):
+def getMonstersSlained(region, summonerId):
+def calcHpPots(region, gameId, teamId, championId):
+def getGoldEarned(region, gameId, teamId, championId):
+def getLargestCriticalStrike(region, gameId, teamId, championId):
+def getTotalDamageDealtToChampions(region, gameId, teamId, championId):
+def getWardsPlaced(region, gameId, teamId, championId):
+def getTotalHeal(region, gameId, teamId, championId):
+def getIpEarned(region, summonerId):
+def getTotalIpEarned(region, summonerId):
+def getAvgLvlUrf(region, summonerId):
+def getTrueDamageDealt(region, gameId, teamId, championId):
+def getTrueDamageTaken(region, gameId, teamId, championId):
+def getUrfKills(region, summonerId):

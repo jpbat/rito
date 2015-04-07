@@ -23,9 +23,10 @@ userData = form.Form(
 class index:
 	def GET(self): 
 		form = userData()
-		return render.formtest(form)
+		return render.summonerName(form)
 	def POST(self):
-		return getGames(web.input()["region"], web.input()["name"])
+		games = getGames(web.input()["region"], web.input()["name"]) 
+		return render.list(games)
 
 class stat:
 	def GET(self):
@@ -42,14 +43,13 @@ def getGames(region, summonerName):
 	return api.getUrfGames(region, summonerId)
 
 def getRandomStat(region, gameId, teamId, championId):
-	# m['gameId'], m['championId'], m['teamId']
 	return 'pots', api.calcHpPots(region, gameId, teamId, championId)
 
 def notfound():
 	return web.notfound("Sorry, Teemo mushrooms destroyed the page you are looking for :(")
 
 def internalerror():
-    return web.internalerror("Looks like some black magic was happening... Heimerdinger is looking the answer to this problem")
+	return web.internalerror("Looks like some black magic was happening... Heimerdinger is looking the answer to this problem and Thresh is trying to hook Lucian.")
 
 if __name__ == '__main__':
 	app = web.application(urls, globals())

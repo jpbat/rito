@@ -19,7 +19,7 @@ def getUrfGamesTimestamp(region, date):
 	try:
 		response = requests.get(requestUrl, params=payload).text
 	except Exception, e:
-		print e
+		  e
 
 	return json.loads(response)
 
@@ -273,10 +273,6 @@ def getTotalHeal(region, gameId, teamId, championId):
 
 	return None
 
-# Returns the ammont of IP earned in the last URF match
-def getIpEarned(region, summonerId):
-	return getUrfGames(region, summonerId)[0]["ipEarned"]
-
 # Returns the sum of IP earned in the last URF matches 
 def getTotalIpEarned(region, summonerId):
 	total = 0
@@ -316,7 +312,7 @@ def getTrueDamageDealt(region, gameId, teamId, championId):
 def getTrueDamageTaken(region, gameId, teamId, championId):
 
 	game = getGameById(region, gameId)
-	
+
 	# find the participantId:
 	participantId = None
 	participants = game["participants"]
